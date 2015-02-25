@@ -3,8 +3,8 @@
 
 #if defined(MT7620_MP)
 /* LED, Button GPIO# definition */
-#define RST_BTN		12
-#define WPS_BTN		12
+#define RST_BTN		1
+#define WPS_BTN		2
 //#define PWR_LED	GND
 #define WIFI_2G_LED	72
 #define WAN_LED		44
