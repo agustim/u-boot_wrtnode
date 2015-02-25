@@ -390,7 +390,7 @@ void rst_fengine(void)
 
 void gpio_init(void)
 {
-	printf( "MT7620 Ai-BR100 gpio init : WPS / RESET pin\n" );
+	printf( "MT7620 gpio init : WPS / RESET pin\n" );
 	mtk7620_set_gpio_dir(WPS_BTN, 1);
 }
 
