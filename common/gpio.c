@@ -400,7 +400,7 @@ unsigned long DETECT(void)
 
 	if(!mtk7620_get_gpio_pin(RST_BTN)) {
 		key = 1;
-		printf("reset buootn pressed!\n");
+		printf("reset button pressed!\n");
 	}
 	return key;
 }
@@ -411,7 +411,7 @@ unsigned long DETECT_WPS(void)
 
 	if(!mtk7620_get_gpio_pin(WPS_BTN)) {
 		key = 1;
-//		printf("wps buootn pressed!\n");
+//		printf("wps button pressed!\n");
 	}
 	return key;
 }
