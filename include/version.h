@@ -192,7 +192,7 @@
 #define SHOW_VER_STR()	\
 	do {	\
 		printf( "============================================ \n" ); \
-		printf( "CleanWRT u-boot_mt7620 Version: %s\n", WEB_FAILSAFE_VERSION ); \
+		printf( "U-Boot_mt7620 Version: %s\n", WEB_FAILSAFE_VERSION ); \
 		printf( "-------------------------------------------- \n" ); \
 		printf( "%s %s %s\n",CHIP_TYPE, CHIP_VERSION, GMAC_MODE ); \
 		printf( "DRAM component: %d Mbits %s\n", DRAM_COMPONENT, DDR_INFO ); \
