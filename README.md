@@ -1,5 +1,5 @@
-Ralink u-boot
-=============
+U-Boot for wrtnode
+==================
 
 Prerequisites
 -------------
@@ -15,8 +15,8 @@ Building
 	$ git clone git@github.com:agustim/u-boot_wrtnode.git
 	$ export CONFIG_CROSS_COMPILER_PATH=/opt/buildroot-gcc342/bin  # necessary if not in /opt
 	$ export PATH=/opt/buildroot-gcc342/bin:$PATH
-	$ make rt2880_config
-	$ git checkout -- .config autoconf.h  # or $ make menuconfig, but there you're on your own
+	$ cp wrtnode_config .config
+	$ make menuconfig
 	$ make
 	$ hexdump -C uboot.bin | head  # look at first bytes to verify
 
