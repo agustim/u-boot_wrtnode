@@ -66,6 +66,22 @@ U_BOOT_CMD(
 );
 #endif
 
+int do_httpd (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
+{
+#ifdef DEBUG
+   printf("File: %s, Func: %s, Line: %d\n", __FILE__,__FUNCTION__ , __LINE__);
+#endif   
+	return NetLoopHttpd();
+}
+#ifdef RALINK_CMDLINE
+U_BOOT_CMD(
+	httpd,	3,	1,	do_httpd,
+	"httpd   - active http server\n",
+	"\n"
+);
+#endif
+	
+
 #ifdef RT2880_U_BOOT_CMD_OPEN
 #ifdef RALINK_CMDLINE
 int do_rarpb (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])

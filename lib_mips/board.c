@@ -64,6 +64,7 @@ extern void  rt2880_eth_halt( struct eth_device* dev );
 extern int incaip_set_cpuclk(void);
 extern int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
 extern int do_tftpb (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
+extern int do_httpd (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
 extern int do_mem_cp ( cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
 extern int flash_sect_protect (int p, ulong addr_first, ulong addr_last);
 int flash_sect_erase (ulong addr_first, ulong addr_last);
@@ -1283,7 +1284,7 @@ void board_init_r (gd_t *id, ulong dest_addr)
 				break;
 		}
 		printf( "============================================ \n" );
-		printf( "CleanWRT u-boot_mt7620 Version: %s\n", WEB_FAILSAFE_VERSION );
+		printf( "U-Boot_mt7620 Version: %s\n", WEB_FAILSAFE_VERSION );
 		printf( "-------------------------------------------- \n" );
 		printf( "%s %s %s\n", CHIP_TYPE, CHIP_VERSION, GMAC_MODE );
 #if defined (MT7620_ASIC_BOARD) || defined(MT7620_FPGA_BOARD)
