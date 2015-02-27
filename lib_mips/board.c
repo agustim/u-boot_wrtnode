@@ -65,6 +65,7 @@ extern int incaip_set_cpuclk(void);
 extern int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
 extern int do_tftpb (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
 extern int do_httpd (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
+extern int do_startnc (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
 extern int do_mem_cp ( cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]);
 extern int flash_sect_protect (int p, ulong addr_first, ulong addr_last);
 int flash_sect_erase (ulong addr_first, ulong addr_last);
@@ -1373,8 +1374,6 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	    timer1 = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
 	}
 
-
-
 /* enter web failsafe mode, added by hubo, July 1st 2014 */
 
 /* added by hubo, to test which io is RST_WPN key, July 15th 2014 */
@@ -1448,6 +1447,9 @@ void board_init_r (gd_t *id, ulong dest_addr)
 /* enter web failsafe mode, added by hubo, July 1st 2014 */
 
 
+#if (CONFIG_COMMANDS & CFG_CMD_NET)
+		eth_initialize(gd->bd);
+#endif
 
 	OperationSelect();   
 	while ( timer1 > 0 ) {
@@ -1481,9 +1483,6 @@ void board_init_r (gd_t *id, ulong dest_addr)
 		argv[2] = &file_name_space[0];
 		memset(file_name_space,0,ARGV_LEN);
 
-#if (CONFIG_COMMANDS & CFG_CMD_NET)
-		eth_initialize(gd->bd);
-#endif
 
 		switch(BootType) {
 		case '1':
