@@ -16,7 +16,7 @@ Building
 	$ export CONFIG_CROSS_COMPILER_PATH=/opt/buildroot-gcc342/bin  # necessary if not in /opt
 	$ export PATH=/opt/buildroot-gcc342/bin:$PATH
 	$ cp wrtnode_config .config
-	$ make menuconfig
+	$ make menuconfig # Exit and save 
 	$ make
 	$ hexdump -C uboot.bin | head  # look at first bytes to verify
 
