@@ -54,7 +54,7 @@ int do_tftpb (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
 #ifdef DEBUG
    printf("File: %s, Func: %s, Line: %d\n", __FILE__,__FUNCTION__ , __LINE__);
-#endif   
+#endif
 	return netboot_common( TFTP, cmdtp, argc, argv );
 }
 
@@ -70,17 +70,37 @@ int do_httpd (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
 #ifdef DEBUG
    printf("File: %s, Func: %s, Line: %d\n", __FILE__,__FUNCTION__ , __LINE__);
-#endif   
+#endif
 	return NetLoopHttpd();
 }
 #ifdef RALINK_CMDLINE
 U_BOOT_CMD(
-	httpd,	3,	1,	do_httpd,
+	httpd,	1,	0,	do_httpd,
 	"httpd   - active http server\n",
-	"\n"
+	NULL
 );
 #endif
-	
+
+#ifdef CONFIG_NETCONSOLE
+/*
+ * Start NetConsole
+ */
+int do_start_nc(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[]){
+	return(run_command("setenv stdin nc;setenv stdout nc;setenv stderr nc;version;", 0));
+}
+
+U_BOOT_CMD(startnc, 1, 0, do_start_nc, "startnc - start net console\n", NULL);
+
+/*
+ * Start Serial Console
+ */
+int do_start_sc(cmd_tbl_t * cmdtp, int flag, int argc, char *argv[]){
+	return(run_command("setenv stdin serial;setenv stdout serial;setenv stderr serial;version;", 0));
+}
+
+U_BOOT_CMD(startsc, 1, 0, do_start_sc, "startsc - start serial console\n", NULL);
+
+#endif
 
 #ifdef RT2880_U_BOOT_CMD_OPEN
 #ifdef RALINK_CMDLINE
@@ -200,10 +220,10 @@ netboot_common (int proto, cmd_tbl_t *cmdtp, int argc, char *argv[])
 
 	case 3:	load_addr = simple_strtoul(argv[1], NULL, 16);
 		copy_filename (BootFile, argv[2], sizeof(BootFile));
-   #ifdef DEBUG		
+   #ifdef DEBUG
       printf("load addr= 0x%08x\n", load_addr);
       printf("boot file= %s\n", BootFile);
-   #endif      
+   #endif
 		break;
 
 	default: printf ("Usage:\n%s\n", cmdtp->usage);
@@ -213,19 +233,19 @@ netboot_common (int proto, cmd_tbl_t *cmdtp, int argc, char *argv[])
 	if ((size = NetLoop(proto)) < 0)
 		return 1;
    printf("NetBootFileXferSize= %08x\n", size);
-   
+
 	/* NetLoop ok, update environment */
 #if (CONFIG_COMMANDS & CFG_CMD_ENV)
 	netboot_update_env();
 #endif
-   
+
 	/* done if no file was loaded (no errors though) */
 	if (size == 0)
 		return 0;
 
 	/* flush cache */
 	flush_cache(load_addr, size);
-	
+
 	/* Loading ok, check if we should attempt an auto-start */
 	if (((s = getenv("autostart")) != NULL) && (strcmp(s,"yes") == 0)) {
 		char *local_args[2];
@@ -235,12 +255,12 @@ netboot_common (int proto, cmd_tbl_t *cmdtp, int argc, char *argv[])
       if(modifies) {
          setenv("autostart", "no");
          setenv ("bootfile", BootFile);
-      #ifdef DEBUG         
+      #ifdef DEBUG
          s = getenv("bootfile");
 	      printf("save bootfile= %s\n", s);
       #endif
 #if (CONFIG_COMMANDS & CFG_CMD_ENV)
-         saveenv();		
+         saveenv();
 #endif
       }
 
@@ -260,11 +280,11 @@ netboot_common (int proto, cmd_tbl_t *cmdtp, int argc, char *argv[])
 #if (CONFIG_COMMANDS & CFG_CMD_PING)
 int do_ping (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {
-	
+
 
 	if (argc < 2)
 		return -1;
-    
+
 	NetPingIP = string_to_ip(argv[1]);
 	if (NetPingIP == 0) {
 		printf ("Usage:\n%s\n", cmdtp->usage);
