@@ -93,15 +93,7 @@
 #include <miiphy.h>
 #endif
 
-
-
-
-
-
-
 #if ( CONFIG_COMMANDS & CFG_CMD_NET )
-
-
 
 #define ARP_TIMEOUT		5		/* Seconds before trying ARP again */
 #ifndef	CONFIG_NET_RETRY_COUNT
@@ -185,7 +177,7 @@ void NcStart( void );
 int nc_input_packet( uchar *pkt, unsigned dest, unsigned src, unsigned len );
 #endif
 
-  
+
 volatile uchar	*PktBuf;
 volatile uchar	 Pkt_Buf_Pool[ ( PKTBUFSRX + 2 ) * PKTSIZE_ALIGN + PKTALIGN ];
 volatile uchar  *NetRxPackets[ PKTBUFSRX ]; /* Receive packets			*/
@@ -321,9 +313,9 @@ int NetLoop( proto_t protocol ){
 	NetArpWaitReplyIP	= 0;
 	NetArpWaitTxPacket	= NULL;
 //	NetTxPacket		= NULL;
-#ifdef DEBUG	
+#ifdef DEBUG
    printf("File: %s, Func: %s, Line: %d\n", __FILE__,__FUNCTION__ , __LINE__);
-#endif   
+#endif
 //
 	if ( !NetTxPacket ) {
 		int	i;
@@ -331,12 +323,12 @@ int NetLoop( proto_t protocol ){
 		/*
 		 *	Setup packet buffers, aligned correctly.
 		 */
-		buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list ); 
+		buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list );
 		NetTxPacket = buf->pbuf;
 
 		debug( "\n NetTxPacket = 0x%08X \n", NetTxPacket );
 		for ( i = 0; i < NUM_RX_DESC; i++ ) {
-			buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list ); 
+			buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list );
 			if ( buf == NULL ) {
 				printf("\n Packet Buffer is empty ! \n");
 				return (-1);
@@ -345,10 +337,11 @@ int NetLoop( proto_t protocol ){
 			//printf("\n NetRxPackets[%d] = 0x%08X\n",i,NetRxPackets[i]);
 		}
 	}
-	
-	NetTxPacket = KSEG1ADDR( NetTxPacket );
 
-	printf( "\n KSEG1ADDR(NetTxPacket) = 0x%08X \n", NetTxPacket );
+	NetTxPacket = KSEG1ADDR( NetTxPacket );
+#ifdef DEBUG
+   printf("\n KSEG1ADDR(NetTxPacket) = 0x%08X \n", NetTxPacket );
+#endif
 
 	if ( !NetArpWaitTxPacket ) {
 		NetArpWaitTxPacket = &NetArpWaitPacketBuf[0] + ( PKTALIGN - 1 );
@@ -516,7 +509,7 @@ restart:
 	 *	Main packet reception loop.  Loop receiving packets until
 	 *	someone sets `NetQuit'.
 	 */
-	for ( ; ; ) {		
+	for ( ; ; ) {
 		WATCHDOG_RESET();
 #ifdef CONFIG_SHOW_ACTIVITY
 		{
@@ -1192,7 +1185,7 @@ void NetReceive( volatile uchar * inpkt, int len ){
 	{
 		printf( "\n en[%d] < ETHER_HDR_SIZE\n", len );
 		return;
-	}	
+	}
 
 #if (CONFIG_COMMANDS & CFG_CMD_CDP)
 	/* keep track if packet is CDP */
@@ -1342,7 +1335,7 @@ void NetReceive( volatile uchar * inpkt, int len ){
 			/* are we waiting for a reply */
 			if ( !NetArpWaitPacketIP || !NetArpWaitPacketMAC )
 				break;
-			
+
 			printf( "Got ARP REPLY, set server/gtwy eth addr (%02x:%02x:%02x:%02x:%02x:%02x)\n",
 				arp->ar_data[0], arp->ar_data[1],
 				arp->ar_data[2], arp->ar_data[3],
@@ -1370,7 +1363,7 @@ void NetReceive( volatile uchar * inpkt, int len ){
 				NetArpWaitPacketMAC = NULL;
 
 				/* if Arp response requested by TFTP,
-				 * send "TFTP Read Request" packet 
+				 * send "TFTP Read Request" packet
 				 * immediately */
 				extern int TftpStarted;
 				if( TftpStarted == 1 ) {
@@ -1865,24 +1858,24 @@ int NetLoopHttpd( void ){
 	NetArpWaitPacketIP	= 0;
 	NetArpWaitReplyIP	= 0;
 	NetArpWaitTxPacket	= NULL;
-#ifdef DEBUG	
+#ifdef DEBUG
    printf("File: %s, Func: %s, Line: %d\n", __FILE__,__FUNCTION__ , __LINE__);
-#endif   
+#endif
 //
-   
+
 	if ( !NetTxPacket ) {
 		int	i;
 		BUFFER_ELEM *buf;
 		/*
 		 *	Setup packet buffers, aligned correctly.
 		 */
-		buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list ); 
+		buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list );
 		NetTxPacket = buf->pbuf;
 
 		debug( "\n NetTxPacket = 0x%08X \n", NetTxPacket );
 		for ( i = 0; i < NUM_RX_DESC; i++ ) {
 
-			buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list ); 
+			buf = rt2880_free_buf_entry_dequeue( &rt2880_free_buf_list );
 			if ( buf == NULL ) {
 				printf("\n Packet Buffer is empty ! \n");
 				return ( -1 );
@@ -1891,10 +1884,12 @@ int NetLoopHttpd( void ){
 			printf( "\n NetRxPackets[%d] = 0x%08X\n",i,NetRxPackets[i] );
 		}
 	}
-	
+
 	NetTxPacket = KSEG1ADDR( NetTxPacket );
 
-	printf("\n KSEG1ADDR(NetTxPacket) = 0x%08X \n",NetTxPacket);
+#ifdef DEBUG
+  printf("\n KSEG1ADDR(NetTxPacket) = 0x%08X \n",NetTxPacket);
+#endif
 
 	if ( !NetArpWaitTxPacket ) {
 		NetArpWaitTxPacket = &NetArpWaitPacketBuf[0] + ( PKTALIGN - 1 );
@@ -1959,13 +1954,13 @@ restart:
 	// start server...
 	IPaddr_t tmp_ip_addr = ntohl( bd->bi_ip_addr );
 	printf( "HTTP server is starting at IP: %ld.%ld.%ld.%ld\n", ( tmp_ip_addr & 0xff000000 ) >> 24, ( tmp_ip_addr & 0x00ff0000 ) >> 16, ( tmp_ip_addr & 0x0000ff00 ) >> 8, ( tmp_ip_addr & 0x000000ff ) );
-	
+
 	HttpdStart();
 
 	// set local host ip address
 	ip[0] = htons( ( tmp_ip_addr & 0xFFFF0000 ) >> 16 );
 	ip[1] = htons( tmp_ip_addr & 0x0000FFFF );
-	
+
 	uip_sethostaddr( ip );
 
 	// set network mask (255.255.255.0 -> local network)
