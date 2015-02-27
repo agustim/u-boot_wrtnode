@@ -29,7 +29,7 @@
 #define __CONFIG_H
 
 //#define DEBUG				1
-//#define ET_DEBUG
+//#define ET_DEBUG		1
 #define CONFIG_RT2880_ETH		1	/* Enable built-in 10/100 Ethernet */
 
 #define CONFIG_MIPS32		1	/* MIPS 4Kc CPU core	*/
@@ -91,6 +91,9 @@
 #undef	CONFIG_BOOTARGS
 
 #define CONFIG_BOOTCOMMAND	"tftp" //"run flash_self"
+
+#define CONFIG_NETCONSOLE
+#define CONFIG_NETCONSOLE_PORT  6666
 
 
 #include <cmd_confdefs.h>

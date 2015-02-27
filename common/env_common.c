@@ -133,6 +133,9 @@ uchar default_environment[] = {
 #if defined(CONFIG_PCI_BOOTDELAY) && (CONFIG_PCI_BOOTDELAY > 0)
 	"pcidelay="	MK_STR(CONFIG_PCI_BOOTDELAY)	"\0"
 #endif
+#ifdef	CONFIG_NETCONSOLE_PORT
+	"ncport=" MK_STR(CONFIG_NETCONSOLE_PORT) "\0"
+#endif
 	"\0"
 };
 

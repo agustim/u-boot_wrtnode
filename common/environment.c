@@ -166,6 +166,9 @@ env_t environment __PPCENV__ = {
 #ifdef	CONFIG_PREBOOT
 	"preboot="	CONFIG_PREBOOT			"\0"
 #endif
+#ifdef	CONFIG_NETCONSOLE_PORT
+	"ncport="		MK_STR(CONFIG_NETCONSOLE_PORT)	"\0"
+#endif
 #ifdef	CONFIG_CLOCKS_IN_MHZ
 	"clocks_in_mhz=" "1"				"\0"
 #endif
