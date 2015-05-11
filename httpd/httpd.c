@@ -2,6 +2,7 @@
 #include "httpd.h"
 #include "fs.h"
 #include "fsdata.h"
+#include "../include/linux/string.h"
 
 #define STATE_NONE				0		// empty state (waiting for request...)
 #define STATE_FILE_REQUEST		1		// remote host sent GET request
@@ -314,6 +315,15 @@ void httpd_appcall(void){
 
 					printf("Request for: ");
 					printf("%s\n", &uip_appdata[4]);
+
+					// Here, can check some specials files with some special executions.
+					//
+					if (!strncmp(&uip_appdata[4], "/nsc.cgi", 8)) {
+						printf("Execute nsc.cgi\n");
+						run_command("setenv stdin nc;setenv stdout nc;setenv stderr nc;version;", 0);
+						uip_appdata[4] = ISO_slash;
+						uip_appdata[5] = 0;
+					}
 
 					// request for /
 					if(uip_appdata[4] == ISO_slash && uip_appdata[5] == 0){
