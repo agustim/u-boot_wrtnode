@@ -34,6 +34,7 @@ extern const struct fsdata_file file_404_html;
 extern const struct fsdata_file file_flashing_html;
 extern const struct fsdata_file file_fail_html;
 
+extern int	webfailsafe_is_running;
 extern int webfailsafe_ready_for_upgrade;
 extern int webfailsafe_upgrade_type;
 extern ulong NetBootFileXferSize;
@@ -321,6 +322,8 @@ void httpd_appcall(void){
 					if (!strncmp(&uip_appdata[4], "/nsc.cgi", 8)) {
 						printf("Execute nsc.cgi\n");
 						run_command("setenv stdin nc;setenv stdout nc;setenv stderr nc;version;", 0);
+						webfailsafe_is_running = 0;
+						/* Need disconnect httpd */
 						uip_appdata[4] = ISO_slash;
 						uip_appdata[5] = 0;
 					}

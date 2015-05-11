@@ -1989,7 +1989,7 @@ restart:
 		}
 
 		// if CTRL+C was pressed -> return!
-		if ( ctrlc() ) {
+		if ( ctrlc() || webfailsafe_is_running == 0 ) {
 			eth_halt();
 
 			// reset global variables to default state
@@ -2003,6 +2003,7 @@ restart:
 			printf( "\nWeb failsafe mode aborted!\n\n" );
 			return( -1 );
 		}
+
 
 		// until upload is not completed, get back to the start of the loop
 		if ( !webfailsafe_ready_for_upgrade ) {

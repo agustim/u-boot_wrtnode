@@ -52,6 +52,11 @@ h1 {
 	border:solid 1px #FE7171;
 }
 
+.g {
+	background: #CFFFBE;
+	border:solid 1px #AFFFBE;	
+}
+
 #f {
 	text-align: center;
 	color: #969393;
